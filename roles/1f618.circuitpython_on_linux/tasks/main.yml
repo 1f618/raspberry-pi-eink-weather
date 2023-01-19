@@ -25,7 +25,10 @@
     chdir: "{{ blinka_dir }}"
   become: yes
 
-# TODO: reboot (after raspi-blinka.py is done)
+- name: Reboot (after raspi-blinka.py is done)
+  # TODO: Use a variable or handler or something so we only have a single reboot at the end?
+  ansible.builtin.reboot:
+  become: yes
 
 - name: Copy blinkatest.py
   copy:
