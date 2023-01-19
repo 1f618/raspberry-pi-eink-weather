@@ -11,28 +11,25 @@
     pip_install_packages:
       - name: setuptools
       - name: adafruit-python-shell
+        # TODO: upgrade?
 
 - name: Download raspi-blinka.py
   ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/adafruit/Raspberry-Pi-Installer-Scripts/master/raspi-blinka.py
-    dest: /home/pi/raspi-blinka.py
+    dest: "{{ blinka_dir }}/raspi-blinka.py"
 
 - name: Run raspi-blinka.py
   command: python3 raspi-blinka.py
+    chdir: "{{ blinka_dir }}"
   become: yes
 
 - name: Copy blinkatest.py
   copy:
     src: blinkatest.py
-    dest: /home/pi/blinkatest.py
+    dest: "{{ blinka_dir }}/blinkatest.py"
 
 - name: Run blinkatest.py
-  command: python3 blinkatest.py
-
-# cd ~
-# sudo pip3 install --upgrade adafruit-python-shell
-# wget https://raw.githubusercontent.com/adafruit/Raspberry-Pi-Installer-Scripts/master/raspi-blinka.py
-# sudo python3 raspi-blinka.py
-
+  command: 'python3 blinkatest.py > blinkatest-output.txt'
+    chdir: "{{ blinka_dir }}"
 
 # TODO: reboot (after raspi-blinka.py is done)
