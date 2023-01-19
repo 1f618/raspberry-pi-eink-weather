@@ -19,7 +19,7 @@
     dest: "{{ blinka_dir }}/raspi-blinka.py"
 
 # - name: Run raspi-blinka.py
-#   command: 'python3 raspi-blinka.py > raspi-blinka-output.txt'
+#   shell: 'python3 raspi-blinka.py >> raspi-blinka-output.log'
 #   args:
 #     chdir: "{{ blinka_dir }}"
 #   become: yes
@@ -34,8 +34,6 @@
     dest: "{{ blinka_dir }}/blinkatest.py"
 
 - name: Run blinkatest.py
-  command: 'python3 blinkatest.py > blinkatest-output.txt'
+  shell: 'python3 blinkatest.py >> blinkatest-output.log'
   args:
     chdir: "{{ blinka_dir }}"
-
-
