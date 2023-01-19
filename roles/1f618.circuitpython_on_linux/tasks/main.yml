@@ -18,13 +18,12 @@
     url: https://raw.githubusercontent.com/adafruit/Raspberry-Pi-Installer-Scripts/master/raspi-blinka.py
     dest: "{{ blinka_dir }}/raspi-blinka.py"
 
-# - name: Run raspi-blinka.py
-#   shell: 'python3 raspi-blinka.py >> raspi-blinka-output.log'
-#   args:
-#     chdir: "{{ blinka_dir }}"
-#   become: yes
-
-# TODO: bypass prompt in raspi-blinka.py, using a parameter or the `yes` command or something.
+- name: Run raspi-blinka.py
+  shell: 'yes n | python3 raspi-blinka.py >> raspi-blinka-output.log 2>&1'
+    # Using `yes n` here to both 1) get past the prompt in the script and 2) not reboot; we'll reboot with a separate command.
+  args:
+    chdir: "{{ blinka_dir }}"
+  become: yes
 
 # TODO: reboot (after raspi-blinka.py is done)
 
