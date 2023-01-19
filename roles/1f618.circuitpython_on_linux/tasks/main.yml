@@ -18,10 +18,15 @@
     url: https://raw.githubusercontent.com/adafruit/Raspberry-Pi-Installer-Scripts/master/raspi-blinka.py
     dest: "{{ blinka_dir }}/raspi-blinka.py"
 
-- name: Run raspi-blinka.py
-  command: python3 raspi-blinka.py
-    chdir: "{{ blinka_dir }}"
-  become: yes
+# - name: Run raspi-blinka.py
+#   command: 'python3 raspi-blinka.py > raspi-blinka-output.txt'
+#   args:
+#     chdir: "{{ blinka_dir }}"
+#   become: yes
+
+# TODO: bypass prompt in raspi-blinka.py, using a parameter or the `yes` command or something.
+
+# TODO: reboot (after raspi-blinka.py is done)
 
 - name: Copy blinkatest.py
   copy:
@@ -30,6 +35,7 @@
 
 - name: Run blinkatest.py
   command: 'python3 blinkatest.py > blinkatest-output.txt'
+  args:
     chdir: "{{ blinka_dir }}"
 
-# TODO: reboot (after raspi-blinka.py is done)
+
