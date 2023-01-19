@@ -3,6 +3,9 @@
   become: yes
   vars:
 
+  roles:
+    - 1f618.circuitpython_on_linux
+
   tasks:
     - name: "Update hostname."
       hostname:

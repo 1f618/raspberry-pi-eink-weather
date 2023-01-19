@@ -1,2 +1,38 @@
 ---
 # tasks file for 1f618.circuitpython_on_linux
+#
+# Installs CircuitPython, based on the following guide:
+# https://learn.adafruit.com/circuitpython-on-raspberrypi-linux/installing-circuitpython-on-raspberry-pi
+
+- name: Install pip packages 
+  ansible.builtin.include_role:
+    name: geerlingguy.pip
+  vars:
+    pip_install_packages:
+      - name: setuptools
+      - name: adafruit-python-shell
+
+- name: Download raspi-blinka.py
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/adafruit/Raspberry-Pi-Installer-Scripts/master/raspi-blinka.py
+    dest: /home/pi/raspi-blinka.py
+
+- name: Run raspi-blinka.py
+  command: python3 raspi-blinka.py
+  become: yes
+
+- name: Copy blinkatest.py
+  copy:
+    src: blinkatest.py
+    dest: /home/pi/blinkatest.py
+
+- name: Run blinkatest.py
+  command: python3 blinkatest.py
+
+# cd ~
+# sudo pip3 install --upgrade adafruit-python-shell
+# wget https://raw.githubusercontent.com/adafruit/Raspberry-Pi-Installer-Scripts/master/raspi-blinka.py
+# sudo python3 raspi-blinka.py
+
+
+# TODO: reboot (after raspi-blinka.py is done)

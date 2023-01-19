@@ -1,10 +1,10 @@
 
 ## Ansible stuff
-* [ ] create inventory
-* [ ] create ansible.cfg
+* [x] create inventory
+* [x] create ansible.cfg
 
 ## Boilerplate
-* [ ] apt update/upgrade
+* [x] apt update/upgrade
 * [ ] configure automatic upgrades
 
 ## CircuitPython
