@@ -5,7 +5,7 @@
     dest: "{{ blinka_dir }}/blinkatest.py"
 
 - name: Run blinkatest.py
-  shell: 'python3 blinkatest.py >> blinkatest-output.log'
+  shell: 'python3 blinkatest.py > blinkatest-output.log'
   args:
     chdir: "{{ blinka_dir }}"
 
