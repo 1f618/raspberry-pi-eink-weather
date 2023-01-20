@@ -6,6 +6,7 @@
       - name: adafruit-circuitpython-epd
     eink_project_name: EInk_Bonnet_Weather_Station
     eink_dir: "/home/pi/{{ eink_project_name }}"
+    open_weather_token: 'TODO_YOUR_TOKEN_HERE'
 
   roles:
     - 1f618.circuitpython_on_linux
@@ -48,5 +49,13 @@
         - name: weather_graphics.py
           url: https://raw.githubusercontent.com/adafruit/Adafruit_Learning_System_Guides/main/EInk_Bonnet_Weather_Station/weather_graphics.py
 
-    # TODO: Replace API key
+    - name: Replace OpenWeatherMap API key
+      ansible.builtin.lineinfile:
+        path: "{{ eink_dir }}/code.py"
+        regexp: '^OPEN_WEATHER_TOKEN ='
+        line: "OPEN_WEATHER_TOKEN = \"{{ open_weather_token }}\""
+    # OPEN_WEATHER_TOKEN = ""
+    
     # TODO: Replace location (city/state)
+    
+    # LOCATION = "Manhattan, US"
