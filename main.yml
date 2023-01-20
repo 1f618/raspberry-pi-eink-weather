@@ -4,7 +4,8 @@
   vars:
     pip_install_packages:
       - name: adafruit-circuitpython-epd
-    eink_dir: /home/pi/EInk_Bonnet_Weather_Station/
+    eink_project_name: EInk_Bonnet_Weather_Station
+    eink_dir: "/home/pi/{{ eink_project_name }}"
 
   roles:
     - 1f618.circuitpython_on_linux
@@ -35,7 +36,7 @@
         path: "{{ eink_dir }}"
         state: directory
 
-    - name: Download raspi-blinka.py
+    - name: "Download {{ eink_project_name }} project files"
       ansible.builtin.get_url:
         url: "{{ item.url }}"
         dest: "{{ eink_dir }}/{{ item.name }}"
