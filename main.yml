@@ -7,6 +7,7 @@
     eink_project_name: EInk_Bonnet_Weather_Station
     eink_dir: "/home/pi/{{ eink_project_name }}"
     open_weather_token: 'TODO_YOUR_TOKEN_HERE'
+    location: "Chicago, US"
 
   roles:
     - 1f618.circuitpython_on_linux
@@ -49,13 +50,13 @@
         - name: weather_graphics.py
           url: https://raw.githubusercontent.com/adafruit/Adafruit_Learning_System_Guides/main/EInk_Bonnet_Weather_Station/weather_graphics.py
 
-    - name: Replace OpenWeatherMap API key
+    - name: Replace OPEN_WEATHER_TOKEN and LOCATION in code.py
       ansible.builtin.lineinfile:
         path: "{{ eink_dir }}/code.py"
-        regexp: '^OPEN_WEATHER_TOKEN ='
-        line: "OPEN_WEATHER_TOKEN = \"{{ open_weather_token }}\""
-    # OPEN_WEATHER_TOKEN = ""
-    
-    # TODO: Replace location (city/state)
-    
-    # LOCATION = "Manhattan, US"
+        regexp: "^{{ item.var_name }} ="
+        line: "{{ item.var_name }} = \"{{ item.var_val }}\""
+      with_items:
+        - var_name: OPEN_WEATHER_TOKEN
+          var_val: "{{ open_weather_token }}"
+        - var_name: LOCATION
+          var_val: "{{ location }}"  

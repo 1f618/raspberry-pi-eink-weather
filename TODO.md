@@ -15,8 +15,8 @@
 ## Weather station
 * [x] pip adafruit-circuitpython-epd
 * [x] project files
-* [ ] replace API key
-* [ ] update location
+* [x] replace API key
+* [x] update location
 * [ ] create cron job?
 
 ## Docs
