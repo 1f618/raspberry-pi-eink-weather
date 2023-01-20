@@ -10,6 +10,7 @@
 ## CircuitPython
 * [x] Build out circuitpython role
 * [x] Run Blinka test
+* [ ] OPT: Check for test success first, recover by trying to install, THEN fail if continue
 
 ## Weather station
 * [x] pip adafruit-circuitpython-epd

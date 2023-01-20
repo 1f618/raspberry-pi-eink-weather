@@ -4,6 +4,7 @@
   vars:
     pip_install_packages:
       - name: adafruit-circuitpython-epd
+    eink_dir: /home/pi/EInk_Bonnet_Weather_Station/
 
   roles:
     - 1f618.circuitpython_on_linux
@@ -28,3 +29,23 @@
         pkg:
         - fonts-dejavu
         - python3-pil
+
+    - name: "Create {{ eink_dir }} directory"
+      ansible.builtin.file:
+        path: "{{ eink_dir }}"
+        state: directory
+
+    - name: Download raspi-blinka.py
+      ansible.builtin.get_url:
+        url: "{{ item.url }}"
+        dest: "{{ eink_dir }}/{{ item.name }}"
+      with_items:
+        - name: meteocons.ttf
+          url: https://github.com/adafruit/Adafruit_Learning_System_Guides/raw/main/EInk_Bonnet_Weather_Station/meteocons.ttf
+        - name: code.py
+          url: https://raw.githubusercontent.com/adafruit/Adafruit_Learning_System_Guides/main/EInk_Bonnet_Weather_Station/code.py
+        - name: weather_graphics.py
+          url: https://raw.githubusercontent.com/adafruit/Adafruit_Learning_System_Guides/main/EInk_Bonnet_Weather_Station/weather_graphics.py
+
+    # TODO: Replace API key
+    # TODO: Replace location (city/state)

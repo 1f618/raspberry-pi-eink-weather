@@ -1,3 +1,3 @@
 ---
 # vars file for 1f618.circuitpython_on_linux
-blinka_dir: /home/pi
+blinka_dir: /home/pi/blinka_install/
