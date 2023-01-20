@@ -1,14 +1,14 @@
-# Ansible Raspberry Pi E Ink Weather 🐂🖋️🥧⛈️
+# Ansible Raspberry Pi E Ink Weather 🐂 🖋️ 🥧 ⛈️
 
 This is an Ansible port of the excellent [Raspberry Pi E-Ink Weather Station using Python](https://learn.adafruit.com/raspberry-pi-e-ink-weather-station-using-python) demo, originally created by [Melissa LeBlanc-Williams](https://learn.adafruit.com/u/MakerMelissa) for [Adafruit Industries](https://www.adafruit.com).
 
-Instead of running through the steps of the demo manually, this Ansible playbook **handles the entire installation automatically**.
+Instead of running through the steps of the demo manually, this Ansible playbook **handles the entire installation automatically**. 🪄 ✨
 
 Included in this port is an Ansible role, `1f618.circuitpython_on_linux`, which installs CircuitPython on a Raspberry Pi
 
 ## Prerequisites
 
-* A Raspberry Pi, running **Raspberry Pi OS Lite** (or full-fledged Raspberry Pi OS), with SSH access already configured
+* A Raspberry Pi, running **Raspberry Pi OS Lite** (or full-fledged Raspberry Pi OS), with SSH access already configured and a [Monochrome E-Ink Bonnet](https://www.adafruit.com/product/4687) attached
 * Ansible
 * Installation of the required Ansible Galaxy roles
   ```
