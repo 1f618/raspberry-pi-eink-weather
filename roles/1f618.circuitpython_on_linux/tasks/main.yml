@@ -13,33 +13,33 @@
       - name: adafruit-python-shell
         # TODO: upgrade?
 
-- name: Download raspi-blinka.py
-  ansible.builtin.get_url:
-    url: https://raw.githubusercontent.com/adafruit/Raspberry-Pi-Installer-Scripts/master/raspi-blinka.py
-    dest: "{{ blinka_dir }}/raspi-blinka.py"
+- name: "Create {{ blinka_dir }} directory"
+  ansible.builtin.file:
+    path: "{{ blinka_dir }}"
+    state: directory
 
-- name: Run raspi-blinka.py
-  shell: 'yes n | python3 raspi-blinka.py >> raspi-blinka-output.log 2>&1'
-    # Using `yes n` here to both 1) get past the prompt in the script and 2) not reboot; we'll reboot with a separate command.
-  args:
-    chdir: "{{ blinka_dir }}"
-  become: yes
+# Check for an existing successful output first.
+# If Blinka is already installed, no need to reinstall.
+- name: Check for successful blinkatest-output.log
+  # https://stackoverflow.com/questions/30786263/only-check-whether-a-line-present-in-a-file-ansible
+  lineinfile:
+    name: "{{ blinka_dir }}/blinkatest-output.log"
+    line: "{{ item }}"
+    state: present
+  with_items:
+    - 'Digital IO ok!'
+    - 'I2C ok!'
+    - 'SPI ok!'
+  check_mode: yes
+  register: conf
+  ignore_errors: yes
+  notify: Install blinka
 
-- name: Reboot (after raspi-blinka.py is done)
-  # TODO: Use a variable or handler or something so we only have a single reboot at the end?
-  ansible.builtin.reboot:
-  become: yes
+# Make sure that `Install blinka` runs (if needed).
+- name: Flush handlers
+  meta: flush_handlers
 
-- name: Copy blinkatest.py
-  copy:
-    src: blinkatest.py
-    dest: "{{ blinka_dir }}/blinkatest.py"
-
-- name: Run blinkatest.py
-  shell: 'python3 blinkatest.py >> blinkatest-output.log'
-  args:
-    chdir: "{{ blinka_dir }}"
-
+# Do a final test, and fail if not successful this time.
 - name: Confirm that test output was good
   # https://stackoverflow.com/questions/30786263/only-check-whether-a-line-present-in-a-file-ansible
   lineinfile:

@@ -1,0 +1,27 @@
+---
+- name: Download raspi-blinka.py
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/adafruit/Raspberry-Pi-Installer-Scripts/master/raspi-blinka.py
+    dest: "{{ blinka_dir }}/raspi-blinka.py"
+
+- name: Run raspi-blinka.py
+  shell: 'yes n | python3 raspi-blinka.py >> raspi-blinka-output.log 2>&1'
+    # Using `yes n` here to both 1) get past the prompt in the script and 2) not reboot; we'll reboot with a separate command.
+  args:
+    chdir: "{{ blinka_dir }}"
+  become: yes
+
+- name: Reboot (after raspi-blinka.py is done)
+  # TODO: Use a variable or handler or something so we only have a single reboot at the end?
+  ansible.builtin.reboot:
+  become: yes
+
+- name: Copy blinkatest.py
+  copy:
+    src: blinkatest.py
+    dest: "{{ blinka_dir }}/blinkatest.py"
+
+- name: Run blinkatest.py
+  shell: 'python3 blinkatest.py >> blinkatest-output.log'
+  args:
+    chdir: "{{ blinka_dir }}"

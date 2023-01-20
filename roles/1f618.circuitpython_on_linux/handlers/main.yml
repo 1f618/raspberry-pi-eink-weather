@@ -1,2 +1,4 @@
 ---
 # handlers file for 1f618.circuitpython_on_linux
+- name: Install blinka
+  include_tasks: tasks/install_blinka.yml
