@@ -8,11 +8,11 @@
 * [ ] configure automatic upgrades
 
 ## CircuitPython
-* [ ] Build out circuitpython role
-* [ ] Run Blinka test
+* [x] Build out circuitpython role
+* [x] Run Blinka test
 
 ## Weather station
-* [ ] pip adafruit-circuitpython-epd
+* [x] pip adafruit-circuitpython-epd
 * [ ] other stuff
 
 ## Docs

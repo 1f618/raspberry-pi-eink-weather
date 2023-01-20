@@ -39,3 +39,13 @@
   shell: 'python3 blinkatest.py >> blinkatest-output.log'
   args:
     chdir: "{{ blinka_dir }}"
+
+- name: Confirm that test output was good
+  # https://stackoverflow.com/questions/30786263/only-check-whether-a-line-present-in-a-file-ansible
+  lineinfile:
+    name: "{{ blinka_dir }}/blinkatest-output.log"
+    line: 'Digital IO ok!'
+    state: present
+  check_mode: yes
+  register: conf
+  failed_when: (conf is changed) or (conf is failed)
