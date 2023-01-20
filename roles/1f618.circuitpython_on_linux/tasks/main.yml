@@ -19,22 +19,10 @@
     state: directory
 
 - name: Install Blinka (if necessary)
-  block:
-    # Check for an existing successful output first.
-    # If Blinka is already installed, no need to reinstall.
-    - name: Check for successful blinkatest-output.log
-      # https://stackoverflow.com/questions/30786263/only-check-whether-a-line-present-in-a-file-ansible
-      lineinfile:
-        name: "{{ blinka_dir }}/blinkatest-output.log"
-        line: "{{ item }}"
-        state: present
-      with_items:
-        - 'Digital IO ok!'
-        - 'I2C ok!'
-        - 'SPI ok!'
-      check_mode: yes
-      register: conf
-      failed_when: (conf is changed) or (conf is failed)
+  block:  
+    - name: Check Blinka
+      # Run blinkatest.py, to see if Blinka is already configured.
+      include_tasks: check_blinka.yml
   rescue:
     - name: Install Blinka
       include_tasks: install_blinka.yml
