@@ -95,7 +95,9 @@
       ansible.builtin.cron:
         name: Run eink weather script at boot
         special_time: reboot
-        job: "/usr/bin/python {{ weather_script_path }}"
+        job: "sleep 60 && /usr/bin/python {{ weather_script_path }}"
+          # Inserting a delay because @reboot wasn't working by itself.
+          # See https://forums.raspberrypi.com/viewtopic.php?t=193438
 
     - name: Reboot (to trigger the cron job)
       ansible.builtin.reboot:
