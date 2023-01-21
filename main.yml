@@ -13,7 +13,8 @@
     weather_script_path: "{{ eink_dir }}/{{ weather_script_name }}"
     weather_graphics_script_name: "weather_graphics.py"
     weather_graphics_script_path: "{{ eink_dir }}/{{ weather_graphics_script_name }}"
-    meteocons_font_path: "/usr/share/fonts/truetype/meteocons.ttf"
+    meteocons_font_name: "meteocons.ttff"
+    meteocons_font_path: "/usr/share/fonts/truetype/{{ meteocons_font_name }}"
 
   pre_tasks:
     - name: Check for OPEN_WEATHER_TOKEN environment variable
@@ -58,7 +59,7 @@
         url: "{{ item.url }}"
         dest: "{{ eink_dir }}/{{ item.name }}"
       with_items:
-        - name: "{{ meteocons_font_path }}"
+        - name: "{{ meteocons_font_name }}"
           url: https://github.com/adafruit/Adafruit_Learning_System_Guides/raw/main/EInk_Bonnet_Weather_Station/meteocons.ttf
         - name: "{{ weather_script_name }}"
           url: https://raw.githubusercontent.com/adafruit/Adafruit_Learning_System_Guides/main/EInk_Bonnet_Weather_Station/code.py
@@ -75,6 +76,13 @@
           var_val: "{{ open_weather_token }}"
         - var_name: LOCATION
           var_val: "{{ location }}"  
+
+    - name: "Put a copy of the font at {{ meteocons_font_path }}"
+      ansible.builtin.copy:
+        src: "{{ eink_dir }}/{{ meteocons_font_name }}"
+        dest: "{{ meteocons_font_path }}"
+        remote_src: yes
+      become: yes
 
     - name: "Replace font path in {{ weather_graphics_script_name }}"
       ansible.builtin.replace:
