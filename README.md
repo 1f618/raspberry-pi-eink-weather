@@ -1,8 +1,8 @@
-# Ansible Raspberry Pi E Ink Weather 🐂 🖋️ 🥧 ⛈️
+# Ansible Raspberry Pi E Ink Weather 🥧 🖋️ ⛈️
 
-This is an Ansible port of the excellent [Raspberry Pi E-Ink Weather Station using Python](https://learn.adafruit.com/raspberry-pi-e-ink-weather-station-using-python) demo, originally created by [Melissa LeBlanc-Williams](https://learn.adafruit.com/u/MakerMelissa) for [Adafruit Industries](https://www.adafruit.com).
+This is an Ansible port of the excellent [Raspberry Pi E-Ink Weather Station using Python](https://learn.adafruit.com/raspberry-pi-e-ink-weather-station-using-python) tutorial, originally created by [Melissa LeBlanc-Williams](https://learn.adafruit.com/u/MakerMelissa) for [Adafruit Industries](https://www.adafruit.com).
 
-Instead of running through the steps of the demo manually, this Ansible playbook **handles the entire installation automatically**. 🪄 ✨
+**If you want to learn, you should follow that tutorial**.  But if you just want the Raspberry Pi e-ink weather station, **this Ansible playbook will build it for you automatically.** 🪄 ✨
 
 Included in this port is an Ansible role, `1f618.circuitpython_on_linux`, which installs CircuitPython on a Raspberry Pi.
 
@@ -18,12 +18,15 @@ Included in this port is an Ansible role, `1f618.circuitpython_on_linux`, which 
 ## Usage
 
 * Update `hosts.yml` with the connection details for your Pi
-* Update the `open_weather_token` and `location` vars in `main.yml`
+* Update the `location` var in `main.yml`
+* Set a `OPEN_WEATHER_TOKEN` environment variable
+  ```
+  OPEN_WEATHER_TOKEN=yourtokengoeshere
+  ```
 * Run the playbook:
-
-```
-ansible-playbook main.yml
-```
+  ```
+  ansible-playbook main.yml
+  ```
 
 ## Special Thanks
 
