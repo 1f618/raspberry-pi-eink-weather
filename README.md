@@ -4,13 +4,13 @@ This is an Ansible port of the excellent [Raspberry Pi E-Ink Weather Station usi
 
 Instead of running through the steps of the demo manually, this Ansible playbook **handles the entire installation automatically**. 🪄 ✨
 
-Included in this port is an Ansible role, `1f618.circuitpython_on_linux`, which installs CircuitPython on a Raspberry Pi
+Included in this port is an Ansible role, `1f618.circuitpython_on_linux`, which installs CircuitPython on a Raspberry Pi.
 
 ## Prerequisites
 
 * A Raspberry Pi, running **Raspberry Pi OS Lite** (or full-fledged Raspberry Pi OS), with SSH access already configured and a [Monochrome E-Ink Bonnet](https://www.adafruit.com/product/4687) attached
 * Ansible
-* Installation of the required Ansible Galaxy roles
+* Installation of the required Ansible Galaxy role(s)
   ```
   ansible-galaxy install -r requirements.yml
   ```
