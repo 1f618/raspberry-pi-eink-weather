@@ -17,7 +17,7 @@
 * [x] project files
 * [x] replace API key
 * [x] update location
-* [ ] create cron job?
+* [x] create cron job
 
 ## Docs
-* [ ] README: Links to originals
+* [x] README: Links to originals
