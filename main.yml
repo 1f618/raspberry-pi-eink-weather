@@ -6,8 +6,20 @@
       - name: adafruit-circuitpython-epd
     eink_project_name: EInk_Bonnet_Weather_Station
     eink_dir: "/home/pi/{{ eink_project_name }}"
-    open_weather_token: 'TODO_YOUR_TOKEN_HERE'
+    open_weather_token: "{{ lookup('env', 'OPEN_WEATHER_TOKEN') }}"
     location: "Chicago, US"
+
+  pre_tasks:
+    - name: Check for OPEN_WEATHER_TOKEN environment variable
+      fail:
+        msg: "Your OPEN_WEATHER_TOKEN is not set.  Set it using 'OPEN_WEATHER_TOKEN=yourtokenhere'."
+      when: open_weather_token is not regex('^[a-f0-9]{32}$')
+
+    - name: Announce settings
+      debug:
+        msg: > 
+          "open_weather_token is '{{ open_weather_token }}'"
+          "location is '{{ location }}'"
 
   roles:
     - 1f618.circuitpython_on_linux
