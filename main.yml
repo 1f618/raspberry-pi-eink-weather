@@ -1,12 +1,16 @@
 ---
 - hosts: all
   vars:
+    # User settings:
+    open_weather_token: "{{ lookup('env', 'OPEN_WEATHER_TOKEN') }}"
+    location: "Chicago, US"
+    # Other vars:
     pip_install_packages:
       - name: adafruit-circuitpython-epd
     eink_project_name: EInk_Bonnet_Weather_Station
     eink_dir: "/home/pi/{{ eink_project_name }}"
-    open_weather_token: "{{ lookup('env', 'OPEN_WEATHER_TOKEN') }}"
-    location: "Chicago, US"
+    weather_script_name: "weather.py"  # note: the original is `code.py`
+    weather_script_path: "{{ eink_dir }}/{{ weather_script_name }}"
 
   pre_tasks:
     - name: Check for OPEN_WEATHER_TOKEN environment variable
@@ -53,14 +57,14 @@
       with_items:
         - name: meteocons.ttf
           url: https://github.com/adafruit/Adafruit_Learning_System_Guides/raw/main/EInk_Bonnet_Weather_Station/meteocons.ttf
-        - name: code.py
+        - name: "{{ weather_script_name }}"
           url: https://raw.githubusercontent.com/adafruit/Adafruit_Learning_System_Guides/main/EInk_Bonnet_Weather_Station/code.py
         - name: weather_graphics.py
           url: https://raw.githubusercontent.com/adafruit/Adafruit_Learning_System_Guides/main/EInk_Bonnet_Weather_Station/weather_graphics.py
 
-    - name: Replace OPEN_WEATHER_TOKEN and LOCATION in code.py
+    - name: "Replace OPEN_WEATHER_TOKEN and LOCATION in {{ weather_script_name }}"
       ansible.builtin.lineinfile:
-        path: "{{ eink_dir }}/code.py"
+        path: "{{ weather_script_path }}"
         regexp: "^{{ item.var_name }} ="
         line: "{{ item.var_name }} = \"{{ item.var_val }}\""
       with_items:
@@ -68,3 +72,8 @@
           var_val: "{{ open_weather_token }}"
         - var_name: LOCATION
           var_val: "{{ location }}"  
+
+    - name: Adds cron job to run the weather script on boot
+      ansible.builtin.cron:
+        special_time: reboot
+        job: "/usr/bin/python {{ weather_script_path }}"
