@@ -11,6 +11,9 @@
     eink_dir: "/home/pi/{{ eink_project_name }}"
     weather_script_name: "weather.py"  # note: the original is `code.py`
     weather_script_path: "{{ eink_dir }}/{{ weather_script_name }}"
+    weather_graphics_script_name: "weather_graphics.py"
+    weather_graphics_script_path: "{{ eink_dir }}/{{ weather_graphics_script_name }}"
+    meteocons_font_path: "/usr/share/fonts/truetype/meteocons.ttf"
 
   pre_tasks:
     - name: Check for OPEN_WEATHER_TOKEN environment variable
@@ -55,11 +58,11 @@
         url: "{{ item.url }}"
         dest: "{{ eink_dir }}/{{ item.name }}"
       with_items:
-        - name: meteocons.ttf
+        - name: "{{ meteocons_font_path }}"
           url: https://github.com/adafruit/Adafruit_Learning_System_Guides/raw/main/EInk_Bonnet_Weather_Station/meteocons.ttf
         - name: "{{ weather_script_name }}"
           url: https://raw.githubusercontent.com/adafruit/Adafruit_Learning_System_Guides/main/EInk_Bonnet_Weather_Station/code.py
-        - name: weather_graphics.py
+        - name: "{{ weather_graphics_script_name }}"
           url: https://raw.githubusercontent.com/adafruit/Adafruit_Learning_System_Guides/main/EInk_Bonnet_Weather_Station/weather_graphics.py
 
     - name: "Replace OPEN_WEATHER_TOKEN and LOCATION in {{ weather_script_name }}"
@@ -73,7 +76,19 @@
         - var_name: LOCATION
           var_val: "{{ location }}"  
 
+    - name: "Replace font path in {{ weather_graphics_script_name }}"
+      ansible.builtin.replace:
+        # default line is: `# icon_font = ImageFont.truetype("./meteocons.ttf", 48)`
+        path: "{{ weather_graphics_script_path }}"
+        regexp: '\./meteocons.ttf'
+        replace: "{{ meteocons_font_path }}"
+
     - name: Adds cron job to run the weather script on boot
       ansible.builtin.cron:
+        name: Run eink weather script at boot
         special_time: reboot
         job: "/usr/bin/python {{ weather_script_path }}"
+
+    - name: Reboot (to trigger the cron job)
+      ansible.builtin.reboot:
+      become: yes
